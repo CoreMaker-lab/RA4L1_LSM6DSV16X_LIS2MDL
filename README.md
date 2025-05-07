@@ -34,30 +34,34 @@
 
 # Project Introduction
 
-- **RA4L1_LCD_Project1**:RA4L1驱动LCD屏幕(1)----配置LCD
-- **CSDN Blog**:[https://coremaker.blog.csdn.net/article/details/146589863](https://coremaker.blog.csdn.net/article/details/146589863)
-- **Video**:[https://www.bilibili.com/video/BV1JuoUYnE2R/](https://www.bilibili.com/video/BV1JuoUYnE2R/)
+- **RA4L1_LSM6DSV16X_LIS2MDL_Project1**:RA4L1开发陀螺仪LSM6DSV16X(1)----轮询获取陀螺仪数据
+- **CSDN Blog**:[https://coremaker.blog.csdn.net/article/details/147385578](https://coremaker.blog.csdn.net/article/details/147385578)
+- **Video**:[https://www.bilibili.com/video/BV11GLNzCEqs/](https://www.bilibili.com/video/BV11GLNzCEqs/)
 
-液晶显示（LCD）是嵌入式系统中常见的人机交互方式，广泛应用于工业控制、智能家电、医疗设备和消费电子产品。Renesas RA4L1 微控制器（MCU）内置 Segment LCD Controller (SLCDC)，可直接驱动 静态、1/2、1/3、1/4 Bias 的段式 LCD 显示屏，无需额外的 LCD 驱动芯片。这种集成方案不仅降低了硬件成本，还简化了设计。
-Renesas RA4L1 的 SLCDC 模块提供了一种高效、低功耗、低成本的 LCD 显示方案。通过 FSP 提供的 r_slcdc 驱动，开发者可以快速初始化 LCD，轻松控制显示内容。在实际项目中，合理配置 COM/SEG 引脚、优化时钟和对比度设置，可以进一步提升 LCD 显示效果。
-
-Liquid Crystal Display (LCD) is a common human-machine interface in embedded systems, widely used in industrial control, smart appliances, medical devices, and consumer electronics. The Renesas RA4L1 microcontroller (MCU) features a built-in Segment LCD Controller (SLCDC) that can directly drive static, 1/2, 1/3, and 1/4 bias segment LCD panels, eliminating the need for an external LCD driver chip. This integrated solution not only reduces hardware cost but also simplifies system design.
-
-The SLCDC module of the RA4L1 provides an efficient, low-power, and cost-effective LCD display solution. With the r_slcdc driver provided by the FSP (Flexible Software Package), developers can quickly initialize the LCD and easily control display content. In real-world applications, proper configuration of COM/SEG pins, as well as optimization of clock settings and contrast, can further enhance LCD display performance.
+本文将介绍如何通过轮询（Polling）方式从LSM6DSV16X六轴惯性传感器中获取陀螺仪数据。轮询模式是一种常用的传感器读取方式，主控MCU定期查询陀螺仪输出寄存器，无需依赖中断机制即可实现数据采集。该方法适用于对响应时延要求不高、系统结构简单的场景，便于快速验证陀螺仪功能或进行基础测试。
 
 
-- **RA4L1_LCD_Project2**:RA4L1驱动LCD屏幕(2)----驱动LCD点亮
-- **CSDN Blog**:[https://coremaker.blog.csdn.net/article/details/146590286](https://coremaker.blog.csdn.net/article/details/146590286)
-- **Video**:[https://www.bilibili.com/video/BV1VHoUYGECR/](https://www.bilibili.com/video/BV1VHoUYGECR/)
+This article introduces how to retrieve gyroscope data from the LSM6DSV16X six-axis inertial sensor using the polling method.
 
-本文旨在介绍如何使用瑞萨 RA4L1 系列单片机的 SLCDC（Segment LCD Controller）模块，驱动段式 LCD 屏幕实现字符或图案的点亮显示。通过分析 LCD 屏幕的 COM/SEG 引脚分布关系，结合 FSP（中的 SLCDC 驱动 API（如 R_SLCDC_Write() 和 R_SLCDC_Modify()），实现对单个或多个数码管笔段的精确控制。文中以实际硬件为例，展示如何点亮指定数码管（如显示数字“1”或“3”），并解释段寄存器设置、位图控制方法以及显示时序，为后续 LCD 显示开发和调试提供参考。
+Polling is a commonly used approach for sensor data acquisition, where the host MCU periodically reads the gyroscope output registers without relying on interrupts. This method is well-suited for applications with low latency requirements and simple system structures, making it ideal for quick validation of gyroscope functionality or basic testing scenarios.
 
-This article aims to demonstrate how to use the SLCDC (Segment LCD Controller) module of the Renesas RA4L1 series microcontroller to drive a segment LCD screen for displaying characters or patterns.
+- **RA4L1_LSM6DSV16X_LIS2MDL_Project2**:RA4L1开发陀螺仪LSM6DSV16X(2)----轮询获取磁力计数据
+- **CSDN Blog**:[https://coremaker.blog.csdn.net/article/details/147706514](https://coremaker.blog.csdn.net/article/details/147706514)
+- **Video**:[https://www.bilibili.com/video/BV1muLNz1EF7/](https://www.bilibili.com/video/BV1muLNz1EF7/)
 
-By analyzing the COM/SEG pin mapping of the LCD panel and leveraging the SLCDC driver APIs provided in the FSP (such as R_SLCDC_Write() and R_SLCDC_Modify()), developers can achieve precise control over individual or multiple segments of a digital display.
+本文将介绍如何使用 LIS2MDL 传感器来读取数据。主要步骤包括初始化传感器接口、验证设备ID、配置传感器的数据输出率和滤波器，以及通过轮询方式持续读取磁力数据和温度数据。读取到的数据会被转换为适当的单位并通过串行通信输出。
 
-Using actual hardware as an example, the article illustrates how to light up specific digits (e.g., displaying the number “1” or “3”) and explains segment register settings, bitmap control methods, and display timing. This serves as a practical reference for subsequent LCD display development and debugging.
+This article explains how to use the LIS2MDL magnetometer sensor to read data. The main steps include initializing the sensor interface, verifying the device ID, configuring the sensor's output data rate and filters, and continuously reading magnetic field and temperature data using the polling method. The acquired data will be converted into appropriate units and output via serial communication.
 
+- **RA4L1_LSM6DSV16X_LIS2MDL_Project3**:RA4L1开发陀螺仪LSM6DSV16X(3)----SFLP获取四元数
+- **CSDN Blog**:[https://coremaker.blog.csdn.net/article/details/147706592](https://coremaker.blog.csdn.net/article/details/147706592)
+- **Video**:[https://www.bilibili.com/video/BV1f2LPzhEcc](https://www.bilibili.com/video/BV1f2LPzhEcc)
 
+在现代的运动跟踪和姿态检测应用中，低功耗、高精度的传感器数据融合处理变得越来越重要。LSM6DSV16X传感器集成了SFLP（Sensor Fusion Low Power）算法模块，可以在低功耗模式下实现六轴传感器数据的高效融合。SFLP模块通过处理加速度计和陀螺仪的数据，生成一个表示设备姿态的四元数，这为游戏、增强现实（AR）、虚拟现实（VR）等应用中的精准运动追踪提供了技术支持。在本文中，我们将深入探讨如何利用SFLP模块获取四元数数据，并分析其在实际应用中的优势和实现方法。
 
+In modern motion tracking and orientation detection applications, low-power and high-precision sensor data fusion has become increasingly important. The LSM6DSV16X sensor integrates an SFLP (Sensor Fusion Low Power) algorithm module, enabling efficient fusion of six-axis sensor data in low-power mode.
+
+The SFLP module processes data from the accelerometer and gyroscope to generate a quaternion representing the device’s orientation. This capability provides essential support for accurate motion tracking in applications such as gaming, augmented reality (AR), and virtual reality (VR).
+
+In this article, we will explore how to retrieve quaternion data using the SFLP module and analyze the advantages and implementation methods of this approach in real-world applications.
 
